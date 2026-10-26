@@ -47,12 +47,36 @@ describe("horasACobrar", () => {
 
 // ===== Ejercicio 03 · Escribe tú las pruebas (mínimo 3) =====
 describe("calcularMinutos", () => {
-    // Tu primera prueba aquí
+    test("calcula correctamente los minutos entre 08:00 y 09:30", () => {
+        expect(calcularMinutos("08:00", "09:30")).toBe(90);
+    });
+
+    test("calcula correctamente los minutos de 14:15 a 14:50", () => {
+        expect(calcularMinutos("14:15", "14:50")).toBe(35);
+    });
+
+    test("retorna 0 si la hora de entrada y salida son iguales", () => {
+        expect(calcularMinutos("10:00", "10:00")).toBe(0);
+    });
 });
 
 // ===== Ejercicio 04 · Escribe tú las pruebas (mínimo 4, con carros y motos) =====
 describe("aplicarTope", () => {
-    // Tu primera prueba aquí
+    test("un carro que supera el tope diario paga máximo $24.000", () => {
+        expect(aplicarTope("carro", 30000)).toBe(24000);
+    });
+
+    test("un carro que no supera el tope paga el valor normal", () => {
+        expect(aplicarTope("carro", 15000)).toBe(15000);
+    });
+
+    test("una moto que supera el tope diario paga máximo $12.000", () => {
+        expect(aplicarTope("moto", 15000)).toBe(12000);
+    });
+
+    test("una moto que no supera el tope paga el valor normal", () => {
+        expect(aplicarTope("moto", 6000)).toBe(6000);
+    });
 });
 
 // ===== Ejercicio 05 · Estas pruebas ya están escritas: haz que pasen =====
@@ -75,7 +99,20 @@ describe("calcularCobro", () => {
 });
 
 // ===== Ejercicio 06 · TDD: escribe PRIMERO estas pruebas (mínimo 4) =====
-// Usa la tabla de criterios que está en tarifas.js, encima de aplicarSello.
 describe("aplicarSello", () => {
-    // Tu primera prueba aquí
+    test("descuenta 1 hora al total de horas a cobrar", () => {
+        expect(aplicarSello(3, true)).toBe(2);
+    });
+
+    test("si tiene sello pero las horas a cobrar son 0, nunca queda negativo", () => {
+        expect(aplicarSello(0, true)).toBe(0);
+    });
+
+    test("si no tiene sello, las horas a cobrar se mantienen iguales", () => {
+        expect(aplicarSello(4, false)).toBe(4);
+    });
+
+    test("descuenta 1 hora correctamente cuando hay varias horas acumuladas", () => {
+        expect(aplicarSello(5, true)).toBe(4);
+    });
 });

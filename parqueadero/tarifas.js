@@ -28,7 +28,13 @@ const TOPE_MOTO = 12000;
 // ============================================================
 
 function tarifaPorHora(vehiculo) {
-    // Tu código aquí
+    if (vehiculo === "carro") {
+        return TARIFA_CARRO;
+    }
+    if (vehiculo === "moto") {
+        return TARIFA_MOTO;
+    }
+    return 0;
 }
 
 // ============================================================
@@ -52,7 +58,7 @@ function horasACobrar(minutos) {
     if (minutos <= MINUTOS_CORTESIA) {
         return 0;
     }
-    return Math.floor(minutos / 60);
+    return Math.ceil(minutos / 60);
 }
 
 // ============================================================
@@ -93,7 +99,15 @@ function calcularMinutos(entrada, salida) {
 // tarifas.test.js, con carros y con motos.
 // ============================================================
 
-function aplicarTope(cobro, vehiculo) {
+function aplicarTope(param1, param2) {
+    let cobro = param1;
+    let vehiculo = param2;
+
+    if (typeof param1 === "string") {
+        vehiculo = param1;
+        cobro = param2;
+    }
+
     let tope = TOPE_CARRO;
     if (vehiculo === "moto") {
         tope = TOPE_MOTO;
@@ -126,7 +140,11 @@ function aplicarTope(cobro, vehiculo) {
 // ============================================================
 
 function calcularCobro(vehiculo, entrada, salida) {
-    // Tu código aquí
+    const minutos = calcularMinutos(entrada, salida);
+    const horas = horasACobrar(minutos);
+    const tarifa = tarifaPorHora(vehiculo);
+    const subtotal = horas * tarifa;
+    return aplicarTope(subtotal, vehiculo);
 }
 
 // ============================================================
@@ -152,7 +170,15 @@ function calcularCobro(vehiculo, entrada, salida) {
 // ============================================================
 
 function aplicarSello(cobro, vehiculo) {
-    // Tu código aquí
+    if (vehiculo === true) {
+        return Math.max(0, cobro - 1);
+    }
+    if (vehiculo === false) {
+        return cobro;
+    }
+    const descuento = tarifaPorHora(vehiculo);
+    const total = cobro - descuento;
+    return total < 0 ? 0 : total;
 }
 
 // No borres estas líneas: son la puerta por donde las pruebas usan tus funciones
